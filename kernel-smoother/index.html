@@ -13,38 +13,45 @@
         stroke-width: 5px;
       }
     </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <button onclick="newData()">New Data</button>
-    Data Function:
-    <input
-      type="text"
-      id="function"
-      value="2 * Math.sin(x) + x"
-      onkeydown="setTimeout(() => newData(), 10)"
-    />
-    <span id="functionErrorMessage" style="color: red"></span>
-    <br />
-    <br />
-    Kernel radius:<input
-      type="range"
-      id="radiusSlider"
-      min="1"
-      max="100"
-      oninput="radiusChanged()"
-      onchange="radiusChanged()"
-    />
+    <div class="container mt-3">
+      <button onclick="newData()">New Data</button>
+      Data Function:
+      <input
+        type="text"
+        id="function"
+        value="2 * Math.sin(x) + x"
+        onkeydown="setTimeout(() => newData(), 10)"
+      />
+      <span id="functionErrorMessage" style="color: red"></span>
+      <br />
+      <br />
+      Kernel radius:<input
+        type="range"
+        id="radiusSlider"
+        min="1"
+        max="100"
+        oninput="radiusChanged()"
+        onchange="radiusChanged()"
+      />
 
-    <span id="radiusValue"></span>
-    <br />
-    <select id="kernelType" onchange="kernelChanged()">
-      <option value="gauss">Gauss</option>
-      <option value="uniform">Uniform</option>
-      <option value="epanechnikov">Epanechnikov</option>
-    </select>
-    <br />
-    <div id="my_dataviz" style="margin-top: 100px"></div>
-
+      <span id="radiusValue"></span>
+      <br />
+      <select id="kernelType" onchange="kernelChanged()">
+        <option value="gauss">Gauss</option>
+        <option value="uniform">Uniform</option>
+        <option value="epanechnikov">Epanechnikov</option>
+      </select>
+      <br />
+      <div id="my_dataviz" style="margin-top: 100px"></div>
+    </div>
     <script>
       var margin = { top: 10, right: 30, bottom: 30, left: 60 },
         width = 2.5 * 460 - margin.left - margin.right,
