@@ -49,6 +49,7 @@
         <option value="gauss">Gauss</option>
         <option value="uniform">Uniform</option>
         <option value="epanechnikov">Epanechnikov</option>
+        <option value="tricube">Tri-cube</option>
       </select>
       <br />
       <div id="my_dataviz" style="margin-top: 100px"></div>
@@ -79,6 +80,7 @@
           uniform: (val) => (-1 <= val && val <= 1 ? 1 : 0),
           epanechnikov: (val) =>
             -1 <= val && val <= 1 ? 0.75 * (1 - x * x) : 0,
+          tricube: (val) => -1 <= val && val <= 1 ? Math.pow(1-Math.pow(Math.abs(val),3), 3) : 0,
         };
 
         var dists = data
@@ -130,7 +132,7 @@
 
       function kernelChanged() {
         currentKernel = document.getElementById("kernelType").value;
-        newData();
+        redraw();
       }
 
       kernelChanged();
