@@ -37,13 +37,14 @@
         type="range"
         id="radiusSlider"
         min="1"
-        max="100"
+        max="1000"
         oninput="radiusChanged()"
         onchange="radiusChanged()"
       />
 
       <span id="radiusValue"></span>
       <br />
+      Kernel type:
       <select id="kernelType" onchange="kernelChanged()">
         <option value="gauss">Gauss</option>
         <option value="uniform">Uniform</option>
@@ -122,7 +123,7 @@
       newData();
 
       function radiusChanged() {
-        radius = document.getElementById("radiusSlider").value / 10;
+        radius = document.getElementById("radiusSlider").value / 100;
         document.getElementById("radiusValue").innerHTML = radius;
         redraw();
       }
@@ -131,6 +132,8 @@
         currentKernel = document.getElementById("kernelType").value;
         newData();
       }
+
+      kernelChanged();
 
       radiusChanged();
 
@@ -190,11 +193,11 @@
 
         // Calculate smoothing line
         var last_y = 0;
-        var path = [...Array(100).keys()]
+        var path = [...Array(400).keys()]
           .map((i) =>
             d3
               .scaleLinear()
-              .domain([0, 100])
+              .domain([0, 400])
               .range([left - 2, right + 2])(i)
           )
           .map((x) => {
