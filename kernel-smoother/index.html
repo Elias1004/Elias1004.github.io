@@ -22,15 +22,24 @@
   </head>
   <body>
     <div class="container mt-3">
-      <button onclick="newData()">New Data</button>
       Data Function:
       <input
         type="text"
         id="function"
-        value="2 * Math.sin(x) + x"
+        value="4 * Math.sin(x) + x"
         onkeydown="setTimeout(() => newData(), 10)"
       />
       <span id="functionErrorMessage" style="color: red"></span>
+      Randomness (std. deviation):<input
+        type="range"
+        id="randomSlider"
+        value="50"
+        min="0"
+        max="1000"
+        oninput="setTimeout(() => newData(), 10)"
+        onchange="setTimeout(() => newData(), 10)"
+      />
+      <button onclick="newRandomness(); newData()">New Data</button>
       <br />
       <br />
       Kernel radius:<input
@@ -51,6 +60,7 @@
         <option value="epanechnikov">Epanechnikov</option>
         <option value="tricube">Tri-cube</option>
         <option value="cosine">Cosine</option>
+        <option value="triangle">Triangle</option>
       </select>
       <br />
       <div id="my_dataviz" style="margin-top: 100px"></div>
@@ -87,6 +97,7 @@
               : 0,
           cosine: (val) =>
             -1 <= val && val <= 1 ? Math.cos((val * Math.PI) / 2) : 0,
+          triangle: (val) => (-1 <= val && val <= 1 ? -Math.abs(x) + 1 : 0),
         };
 
         var dists = data
@@ -103,12 +114,26 @@
 
         return y;
       }
-
       var N = 100;
+
+      var lastRandomness_dx;
+      var lastRandomness_dy;
+
+      function newRandomness() {
+        lastRandomness_dx = [...Array(N).keys()].map(() => Math.random());
+        lastRandomness_dy = [...Array(N).keys()].map(() => randn());
+        console.log("awdawj");
+      }
+
+      newRandomness();
+
       function newData() {
+        var randomness = document.getElementById("randomSlider").value / 100;
+
         var needRedraw = true;
+        var i = 0;
         data = [...Array(N).keys()]
-          .map((i) => Math.random())
+          .map((i) => lastRandomness_dx[i])
           .map((x) => {
             var x = x * 10;
             var function_y;
@@ -122,7 +147,8 @@
               return;
             }
             document.getElementById("functionErrorMessage").innerHTML = "";
-            var y = function_y + randn() * 0.5;
+            var y = function_y + lastRandomness_dy[i] * randomness;
+            i++;
             return { x, y };
           });
 
@@ -160,8 +186,8 @@
 
         // Add X axis
 
-        var left = Math.min(...data.map((d) => d.x));
-        var right = Math.max(...data.map((d) => d.x));
+        var left = 0; //Math.min(...data.map((d) => d.x));
+        var right = 10; //Math.max(...data.map((d) => d.x));
         var lower = Math.min(...data.map((d) => d.y));
         var upper = Math.max(...data.map((d) => d.y));
 
